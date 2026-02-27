@@ -1,0 +1,31 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "YLW HUB | Blox Fruits VIP",
+   LoadingTitle = "YLW System Premium",
+   LoadingSubtitle = "by tnvang",
+   ConfigurationSaving = { Enabled = true, FolderName = "YLW_Configs", FileName = "MainHub" }
+})
+
+-- TAB AUTO FARM (Level, Chest, Fast Attack)
+local MainTab = Window:CreateTab("Auto Farm", 4483362458) 
+MainTab:CreateSection("Farming Options")
+MainTab:CreateToggle({Name = "Auto Farm Level", CurrentValue = false, Callback = function(Value) _G.AutoFarm = Value end})
+MainTab:CreateToggle({Name = "Auto Farm Chest (Fast)", CurrentValue = false, Callback = function(Value) _G.AutoChest = Value end})
+MainTab:CreateToggle({Name = "Fast Attack", CurrentValue = false, Callback = function(Value) _G.FastAttack = Value end})
+
+-- TAB COMBAT (Hitbox, Aim)
+local CombatTab = Window:CreateTab("Combat", 4483362458)
+CombatTab:CreateSection("Power Ups")
+CombatTab:CreateSlider({Name = "Hitbox Size", Range = {0, 100}, Increment = 1, CurrentValue = 0, Callback = function(Value) _G.HitboxSize = Value end})
+CombatTab:CreateToggle({Name = "Aimbot Skill", CurrentValue = false, Callback = function(Value) _G.Aimbot = Value end})
+
+-- TAB VISUALS (ESP Trái ác quỷ, Player)
+local VisualTab = Window:CreateTab("Visuals", 4483362458)
+VisualTab:CreateToggle({Name = "ESP Fruit", CurrentValue = false, Callback = function(Value) _G.ESPFruit = Value end})
+VisualTab:CreateToggle({Name = "Auto Collect Fruit", CurrentValue = false, Callback = function(Value) _G.AutoCollect = Value end})
+
+-- TAB CHARACTER (Speed, Jump)
+local PlayerTab = Window:CreateTab("Character", 4483362458)
+PlayerTab:CreateSlider({Name = "Walk Speed", Range = {16, 500}, Increment = 1, CurrentValue = 16, Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value end})
+PlayerTab:CreateSlider({Name = "Jump Power", Range = {50, 500}, Increment = 1, CurrentValue = 50, Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value end})
