@@ -1,0 +1,86 @@
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local Header = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local Container = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+
+-- UI Settings
+ScreenGui.Parent = game.CoreGui
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+MainFrame.Position = UDim2.new(0.3, 0, 0.2, 0)
+MainFrame.Size = UDim2.new(0, 220, 0, 380)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+Header.Parent = MainFrame
+Header.BackgroundColor3 = Color3.fromRGB(255, 215, 0) -- Gold Theme
+Header.Size = UDim2.new(1, 0, 0, 40)
+local HCorner = Instance.new("UICorner")
+HCorner.CornerRadius = UDim.new(0, 10)
+HCorner.Parent = Header
+
+Title.Parent = Header
+Title.Text = "YLW SERVICE ULTIMATE"
+Title.Size = UDim2.new(1, 0, 1, 0)
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 16
+
+Container.Parent = MainFrame
+Container.BackgroundTransparency = 1
+Container.Position = UDim2.new(0, 5, 0, 50)
+Container.Size = UDim2.new(1, -10, 1, -60)
+Container.CanvasSize = UDim2.new(0, 0, 1.8, 0)
+Container.ScrollBarThickness = 3
+
+UIListLayout.Parent = Container
+UIListLayout.Padding = UDim.new(0, 8)
+UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+-- Button Creator Function
+local function CreateButton(name, color, callback)
+    local Btn = Instance.new("TextButton")
+    local BtnCorner = Instance.new("UICorner")
+    Btn.Parent = Container
+    Btn.Text = name
+    Btn.Size = UDim2.new(0, 180, 0, 35)
+    Btn.BackgroundColor3 = color
+    Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Btn.Font = Enum.Font.SourceSansBold
+    Btn.TextSize = 14
+    BtnCorner.CornerRadius = UDim.new(0, 6)
+    BtnCorner.Parent = Btn
+    Btn.MouseButton1Click:Connect(callback)
+end
+
+-- --- FEATURES ---
+
+-- 1. ESP (Wallhack)
+CreateButton("Enable ESP", Color3.fromRGB(46, 204, 113), function()
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= game.Players.LocalPlayer and v.Character and not v.Character:FindFirstChild("ESPHighlight") then
+            local Highlight = Instance.new("Highlight")
+            Highlight.Name = "ESPHighlight"
+            Highlight.Parent = v.Character
+            Highlight.FillColor = Color3.fromRGB(255, 0, 0)
+            Highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+            Highlight.FillTransparency = 0.5
+        end
+    end
+    print("ESP Activated")
+end)
+
+-- 2. Aimlock (Auto Aim)
+CreateButton("Enable Aimlock", Color3.fromRGB(230, 126, 34), function()
+    local Camera = game:GetService("Workspace").CurrentCamera
+    local function GetClosestPlayer()
+        local Closest, Distance = nil, math.huge
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Head") then
+                local ScreenPos, OnScreen = Camera:WorldToScreen
