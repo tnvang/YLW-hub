@@ -1,0 +1,109 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "YLW SERVICE - PANEL", HidePremium = false, SaveConfig = true, ConfigFolder = "YLWConfig"})
+
+-- Global Variables
+_G.HitboxSize = 15
+_G.Speed = 50
+_G.Jump = 50
+
+-- TAB COMBAT
+local CombatTab = Window:MakeTab({Name = "Combat", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+CombatTab:AddToggle({
+	Name = "Player ESP",
+	Default = false,
+	Callback = function(Value)
+		_G.EspEnabled = Value
+        if Value then
+            task.spawn(function()
+                while _G.EspEnabled do
+                    for _, v in pairs(game.Players:GetPlayers()) do
+                        if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                            if not v.Character.HumanoidRootPart:FindFirstChild("YLW_ESP") then
+                                local Box = Instance.new("BoxHandleAdornment")
+                                Box.Name = "YLW_ESP"
+                                Box.Size = Vector3.new(4, 6, 1)
+                                Box.AlwaysOnTop = true
+                                Box.Transparency = 0.6
+                                Box.Color3 = Color3.fromRGB(255, 255, 0)
+                                Box.Adornee = v.Character.HumanoidRootPart
+                                Box.Parent = v.Character.HumanoidRootPart
+                            end
+                        end
+                    end
+                    task.wait(1)
+                end
+            end)
+        else
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                    local old = v.Character.HumanoidRootPart:FindFirstChild("YLW_ESP")
+                    if old then old:Destroy() end
+                end
+            end
+        end
+	end    
+})
+
+CombatTab:AddSlider({
+	Name = "Hitbox Size",
+	Min = 15,
+	Max = 25,
+	Default = 15,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Size",
+	Callback = function(Value)
+		_G.HitboxSize = Value
+	end    
+})
+
+-- TAB MOVEMENT
+local MoveTab = Window:MakeTab({Name = "Movement", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+
+MoveTab:AddSlider({
+	Name = "WalkSpeed",
+	Min = 50,
+	Max = 300,
+	Default = 50,
+	Increment = 1,
+	ValueName = "Speed",
+	Callback = function(Value)
+		_G.Speed = Value
+	end    
+})
+
+MoveTab:AddSlider({
+	Name = "Jump Power",
+	Min = 50,
+	Max = 200,
+	Default = 50,
+	Increment = 1,
+	ValueName = "Power",
+	Callback = function(Value)
+		_G.Jump = Value
+	end    
+})
+
+-- Loops
+task.spawn(function()
+    while task.wait(0.5) do
+        -- Update Hitbox
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+                v.Character.HumanoidRootPart.Transparency = 0.8
+                v.Character.HumanoidRootPart.CanCollide = false
+            end
+        end
+    end
+end)
+
+game:GetService("RunService").Stepped:Connect(function()
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.Speed
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.Jump
+    end
+end)
+
+OrionLib:Init()
