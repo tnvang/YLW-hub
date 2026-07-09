@@ -1,6 +1,5 @@
 -- [[ PREMIUM MOBILE HUB V4.2 - ULTIMATE INTERFACE EDITION ]] --
 
-if not game:IsLoaded() then game.Loaded:Wait() end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
